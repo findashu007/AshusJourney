@@ -14,20 +14,23 @@
    ROOT VARIABLES
 ========================================== */
 :root {
-  --navy:     #060b18;
-  --navy2:    #0c1424;
-  --navy3:    #111d35;
-  --teal:     #00d4aa;
-  --teal2:    #00f5c4;
-  --gold:     #ffc837;
-  --gold2:    #ffdf80;
-  --coral:    #ff6b6b;
+  --navy:     #07111f;
+  --navy2:    #0d1830;
+  --navy3:    #132240;
+  --teal:     #2dd4bf;
+  --teal2:    #5eead4;
+  --gold:     #fbbf24;
+  --gold2:    #fde68a;
+  --coral:    #fb7185;
   --purple:   #a78bfa;
-  --white:    #f0f4ff;
-  --muted:    #7a8aaa;
-  --card-bg:  rgba(17, 29, 53, 0.8);
-  --border:   rgba(0, 212, 170, 0.15);
-  --glow:     0 0 30px rgba(0, 212, 170, 0.25);
+  --white:    #f8fbff;
+  --muted:    #9aa9c7;
+  --card-bg:  rgba(15, 25, 45, 0.82);
+  --card-bg-strong: rgba(17, 29, 53, 0.95);
+  --border:   rgba(45, 212, 191, 0.16);
+  --border-strong: rgba(45, 212, 191, 0.35);
+  --shadow:   0 18px 45px rgba(0, 0, 0, 0.28);
+  --glow:     0 0 30px rgba(45, 212, 191, 0.18);
 }
 
 /* ==========================================
@@ -39,10 +42,14 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--navy);
+  background:
+    radial-gradient(circle at top, rgba(45, 212, 191, 0.08), transparent 30%),
+    radial-gradient(circle at 85% 15%, rgba(167, 139, 250, 0.10), transparent 22%),
+    linear-gradient(180deg, #07111f 0%, #0b1427 45%, #09111f 100%);
   color: var(--white);
   overflow-x: hidden;
   cursor: none;
+  line-height: 1.6;
 }
 
 /* ==========================================
@@ -205,9 +212,9 @@ nav {
   font-size: 0.88rem;
   letter-spacing: 0.05em;
   border: none;
-  border-radius: 6px;
+  border-radius: 999px;
   text-decoration: none;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 0 30px rgba(0,212,170,0.3);
 }
@@ -347,21 +354,6 @@ section.full-width {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
-
-a.stat-card {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-a.stat-card .stat-link-hint {
-  font-size: 0.65rem;
-  color: var(--teal);
-  opacity: 0;
-  margin-top: 0.6rem;
-  letter-spacing: 0.08em;
-  transition: opacity 0.2s;
-}
-a.stat-card:hover .stat-link-hint { opacity: 1; }
 
 /* ==========================================
    FEATURED PROJECT
@@ -758,11 +750,99 @@ footer .teal { color: var(--teal); }
   transform: translateY(0);
 }
 
+
+/* ==========================================
+   UX / ACCESSIBILITY IMPROVEMENTS
+========================================== */
+a, button { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.container-soft {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: var(--shadow);
+}
+
+.snapshot-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 12px;
+}
+.snapshot-link:focus-visible .stat-card,
+.snapshot-link:hover .stat-card {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow), var(--glow);
+  transform: translateY(-6px);
+}
+.snapshot-link .stat-card {
+  height: 100%;
+}
+.snapshot-hint {
+  margin-top: 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold2);
+  opacity: 0.85;
+}
+
+section {
+  scroll-margin-top: 96px;
+}
+
+.hero-panel {
+  max-width: 900px;
+  padding: 2.5rem 2rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(17,29,53,0.58), rgba(11,20,39,0.74));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.featured-project,
+.activity-card,
+.goal-card,
+.award-row,
+.stat-card {
+  box-shadow: var(--shadow);
+}
+
+.stat-card,
+.activity-card,
+.goal-card,
+.award-row {
+  background: linear-gradient(180deg, rgba(20,31,56,0.86), rgba(13,23,42,0.96));
+}
+
+.project-desc,
+.activity-desc,
+.goal-desc,
+.timeline-desc,
+.contact-sub {
+  color: #b4c0db;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* ==========================================
    RESPONSIVE
 ========================================== */
 @media (max-width: 768px) {
   nav { padding: 1rem; }
+  .hero-panel { padding: 2rem 1.2rem; border-radius: 18px; }
+  .hero-cta-row { flex-direction: column; align-items: center; }
+  .snapshot-link { min-height: 100%; }
   .nav-links { display: none; }
   .featured-project { grid-template-columns: 1fr; }
   .project-visual { width: 80px; height: 80px; font-size: 2.5rem; }
@@ -814,7 +894,7 @@ footer .teal { color: var(--teal); }
      HERO
 ========================================== -->
 <div id="hero">
-  <div>
+  <div class="hero-panel">
     <div class="hero-badge">
       <span class="dot"></span>
       BASIS Independent Fremont · Student Leader
@@ -851,36 +931,48 @@ footer .teal { color: var(--teal); }
     <div class="section-line"></div>
   </div>
 
+  <p class="contact-sub reveal" style="max-width:720px; margin:-1rem 0 2rem;">Each snapshot card now works like a quick link, so visitors can jump straight to the matching section instead of just staring at a number.</p>
+
   <div class="stats-grid">
-    <a href="#activities" class="stat-card reveal">
-      <div class="stat-icon">🏛️</div>
-      <div class="stat-value" data-count="3">0</div>
-      <div class="stat-label">Leadership Roles</div>
-      <div class="stat-link-hint">View Activities →</div>
+    <a class="snapshot-link reveal" href="#activities" aria-label="Jump to leadership activities">
+      <div class="stat-card">
+        <div class="stat-icon">🏛️</div>
+        <div class="stat-value" data-count="3">0</div>
+        <div class="stat-label">Leadership Roles</div>
+        <div class="snapshot-hint">View activities ↓</div>
+      </div>
     </a>
-    <a href="#activities" class="stat-card reveal">
-      <div class="stat-icon">🌍</div>
-      <div class="stat-value gold" data-count="2">0</div>
-      <div class="stat-label">MUN Conferences</div>
-      <div class="stat-link-hint">View Activities →</div>
+    <a class="snapshot-link reveal" href="#activities" aria-label="Jump to Model UN activities">
+      <div class="stat-card">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-value gold" data-count="2">0</div>
+        <div class="stat-label">MUN Conferences</div>
+        <div class="snapshot-hint">See involvement ↓</div>
+      </div>
     </a>
-    <a href="#projects" class="stat-card reveal">
-      <div class="stat-icon">🔬</div>
-      <div class="stat-value purple" data-count="1">0</div>
-      <div class="stat-label">Research Projects</div>
-      <div class="stat-link-hint">View Projects →</div>
+    <a class="snapshot-link reveal" href="#projects" aria-label="Jump to research projects">
+      <div class="stat-card">
+        <div class="stat-icon">🔬</div>
+        <div class="stat-value purple" data-count="1">0</div>
+        <div class="stat-label">Research Projects</div>
+        <div class="snapshot-hint">Open project ↓</div>
+      </div>
     </a>
-    <a href="#activities" class="stat-card reveal">
-      <div class="stat-icon">🤝</div>
-      <div class="stat-value coral" data-count="50">0</div>
-      <div class="stat-label">Community Service Hours</div>
-      <div class="stat-link-hint">View Activities →</div>
+    <a class="snapshot-link reveal" href="#goals" aria-label="Jump to community service goal">
+      <div class="stat-card">
+        <div class="stat-icon">🤝</div>
+        <div class="stat-value coral" data-count="50">0</div>
+        <div class="stat-label">Community Service Hours</div>
+        <div class="snapshot-hint">Track progress ↓</div>
+      </div>
     </a>
-    <a href="#awards" class="stat-card reveal">
-      <div class="stat-icon">🏆</div>
-      <div class="stat-value" data-count="4">0</div>
-      <div class="stat-label">Awards & Honors</div>
-      <div class="stat-link-hint">View Awards →</div>
+    <a class="snapshot-link reveal" href="#awards" aria-label="Jump to awards and honors">
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value" data-count="4">0</div>
+        <div class="stat-label">Awards & Honors</div>
+        <div class="snapshot-hint">See awards ↓</div>
+      </div>
     </a>
   </div>
 </section>
@@ -899,7 +991,7 @@ footer .teal { color: var(--teal); }
   </div>
 
   <!-- 🔧 EDIT THIS SECTION: Replace with Ashwin's main project details -->
-  <div class="featured-project reveal">
+  <div class="featured-project reveal container-soft">
     <div>
       <div>
         <span class="project-tag">Environmental Science</span>
@@ -950,7 +1042,7 @@ footer .teal { color: var(--teal); }
 
     <!-- 🔧 EDIT: Each card = one activity. Dots = years of involvement (fill in as you progress) -->
 
-    <div class="activity-card reveal">
+    <div class="activity-card reveal container-soft">
       <div class="activity-icon-wrap icon-teal">🌐</div>
       <div class="activity-info">
         <div class="activity-name">BIFMUN</div>
@@ -965,7 +1057,7 @@ footer .teal { color: var(--teal); }
       </div>
     </div>
 
-    <div class="activity-card reveal">
+    <div class="activity-card reveal container-soft">
       <div class="activity-icon-wrap icon-gold">🐝</div>
       <div class="activity-info">
         <div class="activity-name">Bee Buddies</div>
@@ -980,7 +1072,7 @@ footer .teal { color: var(--teal); }
       </div>
     </div>
 
-    <div class="activity-card reveal">
+    <div class="activity-card reveal container-soft">
       <div class="activity-icon-wrap icon-purple">🏛️</div>
       <div class="activity-info">
         <div class="activity-name">Student Leadership</div>
@@ -995,7 +1087,7 @@ footer .teal { color: var(--teal); }
       </div>
     </div>
 
-    <div class="activity-card reveal">
+    <div class="activity-card reveal container-soft">
       <div class="activity-icon-wrap icon-coral">➕</div>
       <div class="activity-info">
         <div class="activity-name">Add Activity Here</div>
@@ -1030,7 +1122,7 @@ footer .teal { color: var(--teal); }
 
     <!-- 🔧 EDIT: Add your awards. Medal emoji options: 🥇🥈🥉🏆🌟⭐🎖️ -->
 
-    <div class="award-row reveal">
+    <div class="award-row reveal container-soft">
       <div class="award-medal">🏆</div>
       <div>
         <div class="award-name">Best Delegate — BIFMUN</div>
@@ -1039,7 +1131,7 @@ footer .teal { color: var(--teal); }
       <div class="award-year">2024–25</div>
     </div>
 
-    <div class="award-row reveal">
+    <div class="award-row reveal container-soft">
       <div class="award-medal">🌟</div>
       <div>
         <div class="award-name">Student Leadership Award</div>
@@ -1048,7 +1140,7 @@ footer .teal { color: var(--teal); }
       <div class="award-year">2024–25</div>
     </div>
 
-    <div class="award-row reveal">
+    <div class="award-row reveal container-soft">
       <div class="award-medal">🎖️</div>
       <div>
         <div class="award-name">Add Your Award Here</div>
@@ -1057,7 +1149,7 @@ footer .teal { color: var(--teal); }
       <div class="award-year">Year</div>
     </div>
 
-    <div class="award-row reveal">
+    <div class="award-row reveal container-soft">
       <div class="award-medal">⭐</div>
       <div>
         <div class="award-name">Honor Roll / Academic Excellence</div>
@@ -1124,7 +1216,7 @@ footer .teal { color: var(--teal); }
 
     <!-- 🔧 EDIT: Update progress % and goal descriptions each semester -->
 
-    <div class="goal-card reveal">
+    <div class="goal-card reveal container-soft">
       <div class="goal-icon">🌍</div>
       <div class="goal-title">Win Secretary General — BIFMUN</div>
       <div class="goal-desc">Lead the BIFMUN conference as Secretary General. Demonstrate global thinking, leadership, and diplomacy.</div>
@@ -1132,7 +1224,7 @@ footer .teal { color: var(--teal); }
       <div class="progress-label"><span>In Progress</span><span>70%</span></div>
     </div>
 
-    <div class="goal-card reveal">
+    <div class="goal-card reveal container-soft">
       <div class="goal-icon">🔬</div>
       <div class="goal-title">Complete PFAS Research Paper</div>
       <div class="goal-desc">Finalize methodology, collect data, and write up findings on PFAS contamination in a publishable format.</div>
@@ -1140,7 +1232,7 @@ footer .teal { color: var(--teal); }
       <div class="progress-label"><span>Research Phase</span><span>40%</span></div>
     </div>
 
-    <div class="goal-card reveal">
+    <div class="goal-card reveal container-soft">
       <div class="goal-icon">🤝</div>
       <div class="goal-title">100 Community Service Hours</div>
       <div class="goal-desc">Expand Bee Buddies outreach and deepen community engagement through consistent volunteer work.</div>
@@ -1148,7 +1240,7 @@ footer .teal { color: var(--teal); }
       <div class="progress-label"><span>50 hrs so far</span><span>50%</span></div>
     </div>
 
-    <div class="goal-card reveal">
+    <div class="goal-card reveal container-soft">
       <div class="goal-icon">📚</div>
       <div class="goal-title">Maintain Academic Excellence</div>
       <div class="goal-desc">Sustain strong performance across all subjects — especially STEM. Build a foundation for advanced coursework.</div>
@@ -1204,7 +1296,7 @@ footer .teal { color: var(--teal); }
     Interested in collaborating on a project or inviting me to your program?
   </p>
   <!-- 🔧 EDIT: Replace with real email when ready -->
-  <a href="/cdn-cgi/l/email-protection#1861776d6a587d75797174367b7775" class="btn-primary">Say Hello →</a>
+  <a href="mailto:your@email.com" class="btn-primary">Say Hello →</a>
 </div>
 
 
@@ -1220,7 +1312,7 @@ footer .teal { color: var(--teal); }
 <!-- ==========================================
      SCRIPTS
 ========================================== -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ---- STARFIELD ---- */
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -1287,7 +1379,7 @@ function animateRing() {
 }
 animateRing();
 
-document.querySelectorAll('a, button, .stat-card, .activity-card, .award-row, .goal-card').forEach(el => {
+document.querySelectorAll('a, button, .snapshot-link, .activity-card, .award-row, .goal-card').forEach(el => {
   el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2)'; ring.style.transform = 'scale(1.5)'; });
   el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
 });
@@ -1325,4 +1417,10 @@ function animateCounter(el) {
 
 
 /* ---- STAGGER REVEALS ---- */
-document.querySelectorAll('.stats-grid .stat-card, .activities-grid .activity-card, .aw
+document.querySelectorAll('.stats-grid .stat-card, .activities-grid .activity-card, .awards-list .award-row, .goals-grid .goal-card').forEach((el, i) => {
+  el.style.transitionDelay = (i * 80) + 'ms';
+});
+</script>
+
+</body>
+</html>
